@@ -1,0 +1,19 @@
+package com.edcode.dogapi
+
+import android.app.Application
+import com.edcode.dogapi.di.appModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+
+
+
+class DogApplication(): Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin {
+            androidContext(this@DogApplication)
+            modules()
+        }
+    }
+}
