@@ -13,7 +13,8 @@ class DogApplication(): Application() {
 
         startKoin {
             androidContext(this@DogApplication)
-            modules()
+            modules(appModule)
         }
     }
 }
+
