@@ -17,5 +17,13 @@ class DogApiViewModel(private val dogApiRepo: DogApiRepo): ViewModel() {
             }
         }
     }
+
+    fun getDogs(onSuccessResponse: (String) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dogApiRepo.getDogs {
+                onSuccessResponse(it)
+            }
+        }
+    }
 }
 

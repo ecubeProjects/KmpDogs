@@ -5,5 +5,6 @@ import com.edcode.dogapi.models.Hero
 
 interface DogApiRepo {
     fun getSuperheroList(superheroName: String, onSuccessResponse: (List<Hero>) -> Unit)
+    fun getDogs(onSuccessResponse: (String) -> Unit)
 }
 

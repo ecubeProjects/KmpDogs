@@ -4,9 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiResponse(
-    val results:List<Hero>,
-    @SerialName("response")
+data class ApiDogResponse(
+    val status:String,
+    @SerialName("message")
     val ok:String
 )
-

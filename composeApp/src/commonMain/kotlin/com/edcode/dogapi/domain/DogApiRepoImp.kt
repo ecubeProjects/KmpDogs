@@ -2,6 +2,7 @@ package com.edcode.dogapi.domain
 
 import com.edcode.dogapi.data.DogApiRepo
 import com.edcode.dogapi.di.NetworkUtils.httpClient
+import com.edcode.dogapi.models.ApiDogResponse
 import com.edcode.dogapi.models.ApiResponse
 import com.edcode.dogapi.models.Hero
 import io.ktor.client.call.body
@@ -23,4 +24,12 @@ class DogApiRepoImp: DogApiRepo {
             onSuccessResponse(response.results)
         }
         }
+
+    override fun getDogs(onSuccessResponse: (String) -> Unit) {
+        val url = "https://dog.ceo/api/breeds/image/random"
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = httpClient.get(url).body<ApiDogResponse>()
+            onSuccessResponse(response.ok)
+        }
+    }
 }
