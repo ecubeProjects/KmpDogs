@@ -1,9 +1,9 @@
 package com.edcode.dogapi.domain
 
 import com.edcode.dogapi.data.DogApiRepo
-import com.edcode.dogapi.di.ApiResponse
-import com.edcode.dogapi.di.Hero
 import com.edcode.dogapi.di.NetworkUtils.httpClient
+import com.edcode.dogapi.models.ApiResponse
+import com.edcode.dogapi.models.Hero
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import kotlinx.coroutines.CoroutineScope

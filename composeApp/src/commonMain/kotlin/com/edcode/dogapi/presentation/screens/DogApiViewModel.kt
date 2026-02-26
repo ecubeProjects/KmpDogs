@@ -3,7 +3,7 @@ package com.edcode.dogapi.presentation.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edcode.dogapi.data.DogApiRepo
-import com.edcode.dogapi.di.Hero
+import com.edcode.dogapi.models.Hero
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
