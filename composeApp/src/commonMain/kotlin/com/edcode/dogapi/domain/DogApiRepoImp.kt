@@ -22,7 +22,7 @@ class DogApiRepoImp: DogApiRepo {
         CoroutineScope(Dispatchers.IO).launch {
             val response = httpClient.get(url).body<ApiResponse>()
             onSuccessResponse(response.results)
-        }
+         }
         }
 
     override fun getDogs(onSuccessResponse: (String) -> Unit) {
