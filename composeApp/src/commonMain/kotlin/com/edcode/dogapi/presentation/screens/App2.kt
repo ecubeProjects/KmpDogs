@@ -40,25 +40,9 @@ fun App2() {
                     Text("Buscar")
                 }
             }
-
-
-          //  Text(superDogs)
-
-
-
         }
     }
 
-
-
-
-   /* CoilImage(
-        imageModel = { superDogs }, // loading a network image or local resource using an URL.
-        imageOptions = ImageOptions(
-            contentScale = ContentScale.Crop,
-            alignment = Alignment.Center
-        )
-    )*/
 }
 
 
