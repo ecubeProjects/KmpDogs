@@ -31,8 +31,8 @@ fun App2() {
     }
 
     MaterialTheme {
-        Column(Modifier.fillMaxWidth().padding(top = 64.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-
+        Column(Modifier.fillMaxWidth().padding(top = 64.dp), horizontalAlignment = Alignment.CenterHorizontally)
+        {
             AsyncImage(model =superDogs,null)
 
             Row {
@@ -42,7 +42,4 @@ fun App2() {
             }
         }
     }
-
 }
-
-

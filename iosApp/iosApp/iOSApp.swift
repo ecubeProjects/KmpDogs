@@ -8,6 +8,7 @@ struct iOSApp: App {
         KoinModuleKt.initializeKoin()
     }
 
+
     var body: some Scene {
         WindowGroup {
             ContentView()
