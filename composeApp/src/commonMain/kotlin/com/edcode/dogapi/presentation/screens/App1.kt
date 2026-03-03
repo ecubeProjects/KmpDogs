@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,7 +31,7 @@ fun App1() {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Row {
                 TextField(value = superheroName, onValueChange = { superheroName = it })
-                Button(onClick = { viewModel.getSuperheroList(superheroName) { superheroList = it } }) {
+//                Button(onClick = { viewModel.getSuperheroList(superheroName) { superheroList = it } }) {
                     Text("Load")
                 }
             }
@@ -43,4 +42,4 @@ fun App1() {
             }
         }
     }
-}
+

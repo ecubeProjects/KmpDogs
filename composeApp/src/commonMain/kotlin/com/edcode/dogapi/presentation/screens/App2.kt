@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,22 +25,65 @@ fun App2() {
 
     val viewModel = koinViewModel<DogApiViewModel>()
     var superDogs by remember { mutableStateOf("") }
+    var loading by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit)
+    val state = viewModel.uiState
+
+
+    viewModel.setEvent(event = LatestDogsUiEvent.onLoad)
+
+    LaunchedEffect(state)
     {
-        viewModel.getDogs({superDogs=it})
-    }
+        state.collect {
+            when(it) {
+                is LatestDogsUiState.Success -> {
+                    superDogs = it.pic
+                }
+                is LatestDogsUiState.Error -> {
 
-    MaterialTheme {
-        Column(Modifier.fillMaxWidth().padding(top = 64.dp), horizontalAlignment = Alignment.CenterHorizontally)
-        {
-            AsyncImage(model =superDogs,null)
-
-            Row {
-                Button(onClick = { viewModel.getDogs({superDogs=it})  }) {
-                    Text("Buscar")
+                }
+                is LatestDogsUiState.Loading -> {
+                    loading = it.check
                 }
             }
         }
     }
+
+
+    MaterialTheme {
+        Column(Modifier.fillMaxWidth().padding(top = 64.dp), horizontalAlignment = Alignment.CenterHorizontally)
+        {
+            when(loading)
+            {
+                true -> CircularProgressIndicator()
+
+                false ->    AsyncImage(model =superDogs,null)
+
+            }
+
+            Row {
+                Button(onClick = {
+                    viewModel.setEvent(event = LatestDogsUiEvent.onClick)
+                    }) {
+                    Text("Buscar")
+        }
+    }
+        }
+    }
+
 }
+
+
+
+sealed interface LatestDogsUiState {
+    data class Success(val pic: String) : LatestDogsUiState
+    data class Error(val exception: Throwable): LatestDogsUiState
+    data class Loading(val check: Boolean): LatestDogsUiState
+}
+
+sealed class LatestDogsUiEvent {
+     object  onClick: LatestDogsUiEvent()
+      object onLoad: LatestDogsUiEvent()
+ }
+
+
