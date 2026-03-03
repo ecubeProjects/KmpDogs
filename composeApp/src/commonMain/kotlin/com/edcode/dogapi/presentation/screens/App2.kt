@@ -18,6 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.edcode.dogapi.data.LatestDogsUiEvent
+import com.edcode.dogapi.data.LatestDogsUiState.Error
+import com.edcode.dogapi.data.LatestDogsUiState.Loading
+import com.edcode.dogapi.data.LatestDogsUiState.Success
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -26,23 +30,21 @@ fun App2() {
     val viewModel = koinViewModel<DogApiViewModel>()
     var superDogs by remember { mutableStateOf("") }
     var loading by remember { mutableStateOf(false) }
-
     val state = viewModel.uiState
 
 
-    viewModel.setEvent(event = LatestDogsUiEvent.onLoad)
+
 
     LaunchedEffect(state)
     {
         state.collect {
             when(it) {
-                is LatestDogsUiState.Success -> {
+                is Success -> {
                     superDogs = it.pic
                 }
-                is LatestDogsUiState.Error -> {
-
+                is Error -> {
                 }
-                is LatestDogsUiState.Loading -> {
+                is Loading -> {
                     loading = it.check
                 }
             }
@@ -55,15 +57,18 @@ fun App2() {
         {
             when(loading)
             {
-                true -> CircularProgressIndicator()
+                true ->  {
+                    CircularProgressIndicator()
+                    Text("Encontrando Perrhijos")
+                }
 
-                false ->    AsyncImage(model =superDogs,null)
+                false -> AsyncImage(model =superDogs,null)
 
             }
 
             Row {
                 Button(onClick = {
-                    viewModel.setEvent(event = LatestDogsUiEvent.onClick)
+                    viewModel.setEvent(event = LatestDogsUiEvent.OnClick)
                     }) {
                     Text("Buscar")
         }
@@ -75,15 +80,7 @@ fun App2() {
 
 
 
-sealed interface LatestDogsUiState {
-    data class Success(val pic: String) : LatestDogsUiState
-    data class Error(val exception: Throwable): LatestDogsUiState
-    data class Loading(val check: Boolean): LatestDogsUiState
-}
 
-sealed class LatestDogsUiEvent {
-     object  onClick: LatestDogsUiEvent()
-      object onLoad: LatestDogsUiEvent()
- }
+
 
 

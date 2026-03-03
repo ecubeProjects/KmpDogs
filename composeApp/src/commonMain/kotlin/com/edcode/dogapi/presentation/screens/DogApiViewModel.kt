@@ -3,6 +3,8 @@ package com.edcode.dogapi.presentation.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edcode.dogapi.data.DogApiRepo
+import com.edcode.dogapi.data.LatestDogsUiEvent
+import com.edcode.dogapi.data.LatestDogsUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
@@ -16,6 +18,10 @@ class DogApiViewModel(private val dogApiRepo: DogApiRepo): ViewModel() {
     private val _uiState = MutableStateFlow<LatestDogsUiState>(LatestDogsUiState.Loading(true))
     val uiState: StateFlow<LatestDogsUiState> = _uiState
 
+
+    init {
+       setEvent(event = LatestDogsUiEvent.OnLoading)
+    }
 
     private fun getDogs() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -40,11 +46,11 @@ class DogApiViewModel(private val dogApiRepo: DogApiRepo): ViewModel() {
     fun setEvent(event: LatestDogsUiEvent) {
 
         when (event) {
-            is LatestDogsUiEvent.onClick -> {
+            is LatestDogsUiEvent.OnClick -> {
                 getDogs()
             }
 
-            is LatestDogsUiEvent.onLoad -> {
+            is LatestDogsUiEvent.OnLoading -> {
                 waitForLoading()
                 getDogs()
             }
