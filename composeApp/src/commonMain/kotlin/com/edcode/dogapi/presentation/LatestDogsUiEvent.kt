@@ -1,4 +1,4 @@
-package com.edcode.dogapi.data
+package com.edcode.dogapi.presentation
 
 sealed class LatestDogsUiEvent {
       object OnClick: LatestDogsUiEvent()

@@ -18,10 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.edcode.dogapi.data.LatestDogsUiEvent
-import com.edcode.dogapi.data.LatestDogsUiState.Error
-import com.edcode.dogapi.data.LatestDogsUiState.Loading
-import com.edcode.dogapi.data.LatestDogsUiState.Success
+import com.edcode.dogapi.presentation.LatestDogsUiEvent
+import com.edcode.dogapi.presentation.LatestDogsUiState.Error
+import com.edcode.dogapi.presentation.LatestDogsUiState.Loading
+import com.edcode.dogapi.presentation.LatestDogsUiState.Success
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

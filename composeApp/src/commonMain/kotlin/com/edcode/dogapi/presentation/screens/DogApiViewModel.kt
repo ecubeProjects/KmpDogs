@@ -2,17 +2,18 @@ package com.edcode.dogapi.presentation.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edcode.dogapi.data.DogApiRepo
-import com.edcode.dogapi.data.LatestDogsUiEvent
-import com.edcode.dogapi.data.LatestDogsUiState
+import com.edcode.dogapi.di.DogApiUseCases
+import com.edcode.dogapi.presentation.LatestDogsUiEvent
+import com.edcode.dogapi.presentation.LatestDogsUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class DogApiViewModel(private val dogApiRepo: DogApiRepo): ViewModel() {
+class DogApiViewModel(private val dogApiUseCases: DogApiUseCases): ViewModel() {
 
 
     private val _uiState = MutableStateFlow<LatestDogsUiState>(LatestDogsUiState.Loading(true))
@@ -25,7 +26,7 @@ class DogApiViewModel(private val dogApiRepo: DogApiRepo): ViewModel() {
 
     private fun getDogs() {
         viewModelScope.launch(Dispatchers.IO) {
-            dogApiRepo.getDogs().collect {
+            dogApiUseCases.getDogPic().collect{ /*Venimos de un flow de ahi el collect*/
                 _uiState.value = LatestDogsUiState.Success(it)
             }
         }
@@ -34,9 +35,14 @@ class DogApiViewModel(private val dogApiRepo: DogApiRepo): ViewModel() {
     private fun waitForLoading() {
 
         viewModelScope.launch {
-            _uiState.value= LatestDogsUiState.Loading(true)
+            _uiState.update {
+                   LatestDogsUiState.Loading(true)
+            }
             delay(1000)
-            _uiState.value= LatestDogsUiState.Loading(false)
+            _uiState.update {
+                LatestDogsUiState.Loading(false)
+            }
+
         }
     }
 
@@ -57,4 +63,6 @@ class DogApiViewModel(private val dogApiRepo: DogApiRepo): ViewModel() {
         }
     }
 }
+
+
 

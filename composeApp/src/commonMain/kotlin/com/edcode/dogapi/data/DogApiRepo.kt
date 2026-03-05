@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface DogApiRepo {
     fun getSuperheroList(superheroName: String, onSuccessResponse: (List<Hero>) -> Unit)
-    fun getDogs(): Flow<String>
+    suspend fun getDogs(): Flow<String>
 }
 

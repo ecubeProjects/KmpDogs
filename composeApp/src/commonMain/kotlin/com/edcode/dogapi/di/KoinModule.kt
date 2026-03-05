@@ -15,11 +15,18 @@ import org.koin.dsl.module
 val appModule = module{
 
    single<DogApiRepo> { DogApiRepoImp() }
-   factory { DogApiViewModel(dogApiRepo = get()) }
 
+
+    /**
+     * Le pasamos casos de uso al viewmodel*/
+
+    factory { DogApiViewModel(dogApiUseCases = get()) }
+
+    /**
+    Insertamos casos de usos para las clases*/
+
+   single { DogApiUseCases (repo = get())}
 }
-
-
 
 fun initializeKoin() {
     startKoin {
@@ -37,4 +44,20 @@ object NetworkUtils {
 }
 
 
+/**
+Insertamos casos de usos , usamos suspend cuando consumimos o vamos a base de datos*/
 
+ class DogApiUseCases(private val repo: DogApiRepo) {
+     suspend fun getDogPic() = getDogPic(repo).invoke()
+}
+
+
+
+/**
+ * Caso de uso de ejemplo*/
+
+
+class getDogPic (private val repo: DogApiRepo)
+{
+    suspend operator fun invoke() = repo.getDogs()
+}

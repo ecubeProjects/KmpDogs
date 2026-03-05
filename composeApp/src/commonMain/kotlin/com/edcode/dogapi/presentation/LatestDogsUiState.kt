@@ -1,4 +1,4 @@
-package com.edcode.dogapi.data
+package com.edcode.dogapi.presentation
 
 sealed interface LatestDogsUiState {
     data class Success(val pic: String) : LatestDogsUiState

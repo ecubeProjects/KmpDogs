@@ -29,7 +29,7 @@ class DogApiRepoImp: DogApiRepo {
         }
     }
 
-    override fun getDogs(): Flow<String> =
+    override suspend fun getDogs(): Flow<String> =
         flow {
           val url = "https://dog.ceo/api/breeds/image/random"
             val response = httpClient.get(url).body<ApiDogResponse>()
