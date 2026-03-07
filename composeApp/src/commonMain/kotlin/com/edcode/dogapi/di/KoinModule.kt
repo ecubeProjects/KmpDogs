@@ -14,19 +14,37 @@ import org.koin.dsl.module
 
 val appModule = module{
 
-   single<DogApiRepo> { DogApiRepoImp() }
+    single <HttpClient> {
+        HttpClient {
+            install(ContentNegotiation)
+            {
+                json(json = Json { ignoreUnknownKeys = true }, contentType = ContentType.Any)
+            }
+        }
+    }
+
+   single<DogApiRepo> { DogApiRepoImp(client = get()) }
+
 
 
     /**
-     * Le pasamos casos de uso al viewmodel*/
+     * Le pasamos casos de uso  en lugar del repositorio al viewmodel*/
 
     factory { DogApiViewModel(dogApiUseCases = get()) }
 
     /**
-    Insertamos casos de usos para las clases*/
+    Insertamos casos de usos para las clases , el singleton (data class) recibe los casos de uso y devuelve una clase */
 
-   single { DogApiUseCases (repo = get())}
+    single { DogUseCases( GetSingleDogPics = get() , getBreads = get()) }
+
+
+    single { GetSingleDogPics(repo = get())}
+    single { getBreads(repo = get())}
+
 }
+
+
+
 
 fun initializeKoin() {
     startKoin {
@@ -35,29 +53,28 @@ fun initializeKoin() {
 }
 
 
-object NetworkUtils {
-    val httpClient = HttpClient {
-        install(ContentNegotiation){
-            json(json = Json { ignoreUnknownKeys = true }, contentType = ContentType.Any)
-        }
-    }
-}
 
 
 /**
 Insertamos casos de usos , usamos suspend cuando consumimos o vamos a base de datos*/
 
- class DogApiUseCases(private val repo: DogApiRepo) {
-     suspend fun getDogPic() = getDogPic(repo).invoke()
-}
+data class DogUseCases(
+    val GetSingleDogPics: GetSingleDogPics,
+    val getBreads: getBreads
+)
 
 
 
 /**
  * Caso de uso de ejemplo*/
 
-
-class getDogPic (private val repo: DogApiRepo)
-{
+  class GetSingleDogPics (private val repo: DogApiRepo) {
     suspend operator fun invoke() = repo.getDogs()
 }
+
+class getBreads (private val repo: DogApiRepo) {
+    suspend operator fun invoke() = repo.getBreads()
+}
+
+
+

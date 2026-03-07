@@ -2,7 +2,7 @@ package com.edcode.dogapi.presentation.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edcode.dogapi.di.DogApiUseCases
+import com.edcode.dogapi.di.DogUseCases
 import com.edcode.dogapi.presentation.LatestDogsUiEvent
 import com.edcode.dogapi.presentation.LatestDogsUiState
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class DogApiViewModel(private val dogApiUseCases: DogApiUseCases): ViewModel() {
+class DogApiViewModel(private val dogApiUseCases: DogUseCases): ViewModel() {
 
 
     private val _uiState = MutableStateFlow<LatestDogsUiState>(LatestDogsUiState.Loading(true))
@@ -21,12 +21,13 @@ class DogApiViewModel(private val dogApiUseCases: DogApiUseCases): ViewModel() {
 
 
     init {
+        getBreads()
        setEvent(event = LatestDogsUiEvent.OnLoading)
     }
 
     private fun getDogs() {
         viewModelScope.launch(Dispatchers.IO) {
-            dogApiUseCases.getDogPic().collect{ /*Venimos de un flow de ahi el collect*/
+            dogApiUseCases.GetSingleDogPics().collect{ /*Venimos de un flow de ahi el collect*/
                 _uiState.value = LatestDogsUiState.Success(it)
             }
         }
@@ -46,6 +47,17 @@ class DogApiViewModel(private val dogApiUseCases: DogApiUseCases): ViewModel() {
         }
     }
 
+    private fun getBreads() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dogApiUseCases.getBreads().collect {
+                println("Razas = ${it.keys}")
+            }
+        }
+    }
+
+
+
+
 
 
 
@@ -60,6 +72,8 @@ class DogApiViewModel(private val dogApiUseCases: DogApiUseCases): ViewModel() {
                 waitForLoading()
                 getDogs()
             }
+
+
         }
     }
 }
